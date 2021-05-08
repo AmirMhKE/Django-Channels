@@ -12,4 +12,4 @@ class Message(models.Model):
         return Message.objects.order_by("-timestamp").all()
 
     def __str__(self):
-        return f"{self.author.username}({self.content[:30]}...) - {self.timestamp}"    
+        return f"{self.author.username}"    

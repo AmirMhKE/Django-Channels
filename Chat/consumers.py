@@ -14,8 +14,7 @@ class ChatConsumer(WebsocketConsumer):
         author = data["username"]
         user_model = user.objects.filter(username=author)[0]
         message_model = Message.objects.create(author=user_model, content=message)
-        result = self.message_serializer(message_model)
-        result = eval(result)["content"]
+        result = eval(self.message_serializer(message_model))
         self.send_to_chat_message(result)
 
     def fetch_message(self, data):
@@ -66,7 +65,9 @@ class ChatConsumer(WebsocketConsumer):
             {
                 "type": "chat_message",
                 "message": message,
-                "command": "new_message"
+                "content": message["content"],
+                "command": "new_message",
+                "__str__": message["__str__"]
             }
         )
 
