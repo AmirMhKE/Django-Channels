@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Rooms</title>
 </head>
-<body>
-    What chat room would you like to enter?<br>
+<body dir="rtl">
+    {% for chat in chat_rooms %}
+        <a href="http://localhost:8000/chat/{{chat.room_name}}/">{{chat.room_name}}</a><br>
+    {% endfor %}
+
+    وارد چه گروهی میخواهید بشوید؟<br>
     <input type="text" size="100" id="room-name-input"><br>
     <input type="button" value="Enter" id="room-name-submit">
 

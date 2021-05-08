@@ -4,7 +4,7 @@ from channels.generic.websocket import WebsocketConsumer
 from rest_framework.renderers import JSONRenderer
 from django.contrib.auth import get_user_model
 from .serializers import MessageSerializer
-from .models import Message
+from .models import Message, Chat
 
 user = get_user_model()
 
@@ -12,13 +12,16 @@ class ChatConsumer(WebsocketConsumer):
     def new_message(self, data):
         message = data["message"]
         author = data["username"]
+        room_name = data["room_name"]
         user_model = user.objects.filter(username=author)[0]
-        message_model = Message.objects.create(author=user_model, content=message)
+        chat_model = Chat.objects.get(room_name=room_name)
+        message_model = Message.objects.create(author=user_model, content=message, related_chat=chat_model)
         result = eval(self.message_serializer(message_model))
         self.send_to_chat_message(result)
 
     def fetch_message(self, data):
-        qs = Message.last_message(self)
+        room_name = data["room_name"]
+        qs = Message.last_message(self, room_name)
         message_json = self.message_serializer(qs)
         content = {
             "message": eval(message_json),

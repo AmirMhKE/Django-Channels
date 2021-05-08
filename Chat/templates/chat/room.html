@@ -65,7 +65,10 @@
         );
 
       chatSocket.onopen = function(e) {
-          chatSocket.send(JSON.stringify({'command': 'fetch_message'}));
+          chatSocket.send(JSON.stringify({
+            'command': 'fetch_message',
+            'room_name': roomName
+          }));
       }
 
       chatSocket.onmessage = function(e) {
@@ -99,6 +102,7 @@
               'message': convert_message,
               'command': 'new_message',
               'username' : username,
+              'room_name': roomName
             }));
           }
           document.querySelector(".messages").scrollTop = scorllNum;
