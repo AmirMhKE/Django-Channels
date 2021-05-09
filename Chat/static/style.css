@@ -556,7 +556,6 @@ body {
     text-align: right;
     display: inline-block;
     clear: both;
-    float: left;
     margin: 15px 15px 5px 15px;
     width: calc(100% - 25px);
     font-size: 0.9em;
@@ -565,7 +564,7 @@ body {
     margin-bottom: 20px;
   }
   #frame .content .messages ul li.sent img {
-    margin: 6px 8px 0 0;
+    margin: 6px 0 0 8px;
   }
   #frame .content .messages ul li.sent > div {
     display: inline-block;
@@ -573,17 +572,24 @@ body {
     color: #f5f5f5;
   }
   #frame .content .messages ul li.replies img {
-    float: right;
-    margin: 6px 0 0 8px;
+    margin: 6px 8px 0 0;
+    float: left;
   }
   #frame .content .messages ul li.replies > div {
     background: #f5f5f5;
-    float: right;
+  }
+  #frame .content .messages ul li.replies {
+    text-align: left;
   }
   #frame .content .messages ul li img {
-    width: 20%;
-    border-radius: 50%;
-    float: left;
+    width: 25%;
+    border-radius: 5%;
+    float: right;
+  }
+  @media screen and (max-width: 1000px) {
+    #frame .content .messages ul li img {
+      width: 40%;
+    }
   }
   #frame .content .messages ul li > div {
     display: inline-block;

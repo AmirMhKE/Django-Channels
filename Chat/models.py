@@ -15,6 +15,11 @@ class Chat(models.Model):
         verbose_name_plural = "چت ها"
 
 class Message(models.Model):
+    STATUS_CHOICES = (
+        ("txt", "متن"),
+        ("img", "عکس")
+    )
+    message_type = models.CharField(max_length=3, choices=STATUS_CHOICES, blank=True, verbose_name="نوع پیام")
     author = models.ForeignKey(user, on_delete=models.CASCADE, verbose_name="نویسنده")
     content = models.TextField(verbose_name="محتوا")
     related_chat = models.ForeignKey(Chat, on_delete=models.CASCADE, blank=True, verbose_name="گروه مقصد")

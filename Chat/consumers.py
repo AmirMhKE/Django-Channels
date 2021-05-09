@@ -15,7 +15,7 @@ class ChatConsumer(WebsocketConsumer):
         room_name = data["room_name"]
         user_model = user.objects.filter(username=author)[0]
         chat_model = Chat.objects.get(room_name=room_name)
-        message_model = Message.objects.create(author=user_model, content=message, related_chat=chat_model)
+        message_model = Message.objects.create(message_type="txt", author=user_model, content=message, related_chat=chat_model)
         result = eval(self.message_serializer(message_model))
         self.send_to_chat_message(result)
 
@@ -28,6 +28,15 @@ class ChatConsumer(WebsocketConsumer):
             "command": "fetch_message"
         }
         self.chat_message(content)
+
+    def new_image(self, data):
+        author = data["__str__"]
+        room_name = data["room_name"]
+        user_model = user.objects.filter(username=author)[0]
+        chat_model = Chat.objects.get(room_name=room_name)
+        message_model = Message.objects.create(message_type="img", author=user_model, 
+        content=data["content"], related_chat=chat_model)
+        self.send_to_chat_message(data)
 
     def message_serializer(self, qs):
         qs_func = lambda qs: True if qs.__class__.__name__ == "QuerySet" else False
@@ -48,6 +57,7 @@ class ChatConsumer(WebsocketConsumer):
     commands = {
         "new_message": new_message,
         "fetch_message": fetch_message,
+        "img": new_image
     }
 
     def disconnect(self, close_code):
@@ -63,13 +73,14 @@ class ChatConsumer(WebsocketConsumer):
         self.commands[command](self, text_data_dict)
 
     def send_to_chat_message(self, message):
+        command = message.get("command")
+
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 "type": "chat_message",
-                "message": message,
                 "content": message["content"],
-                "command": "new_message",
+                "command": (lambda command: "img" if command == "img" else "new_message")(command),
                 "__str__": message["__str__"]
             }
         )
