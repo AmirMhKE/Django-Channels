@@ -17,7 +17,26 @@ class ChatConsumer(WebsocketConsumer):
         chat_model = Chat.objects.get(room_name=room_name)
         message_model = Message.objects.create(message_type="txt", author=user_model, content=message, related_chat=chat_model)
         result = eval(self.message_serializer(message_model))
+        data.update({"room_name": room_name, "message_type": "txt"})
+        self.notif(data)
         self.send_to_chat_message(result)
+
+    def notif(self, data):
+        message_room_name = data["room_name"]
+        chat_room_qs = Chat.objects.filter(room_name=message_room_name)[0]
+        members_list = [m.username for m in chat_room_qs.members.all()]
+
+        async_to_sync(self.channel_layer.group_send)(
+            "chat_listener",
+            {
+                "type": "chat_message",
+                "message_type": data["message_type"],
+                "content": data.get("message"),
+                "__str__": (lambda x: x if x is not None else data.get("__str__"))(data.get("username")),
+                "room_name": message_room_name,
+                "members_list": members_list
+            }
+        )
 
     def fetch_message(self, data):
         room_name = data["room_name"]
@@ -36,6 +55,8 @@ class ChatConsumer(WebsocketConsumer):
         chat_model = Chat.objects.get(room_name=room_name)
         message_model = Message.objects.create(message_type="img", author=user_model, 
         content=data["content"], related_chat=chat_model)
+        data.update({"message_type": "img"})
+        self.notif(data)
         self.send_to_chat_message(data)
 
     def message_serializer(self, qs):

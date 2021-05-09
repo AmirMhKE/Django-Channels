@@ -556,7 +556,7 @@ body {
     text-align: right;
     display: inline-block;
     clear: both;
-    margin: 15px 15px 5px 15px;
+    margin: 15px 15px 0 0;
     width: calc(100% - 25px);
     font-size: 0.9em;
   }
@@ -592,21 +592,20 @@ body {
     }
   }
   #frame .content .messages ul li > div {
-    display: inline-block;
     padding: 10px 15px;
     border-radius: 20px;
-    max-width: 300px;
+    max-width: 35%;
     line-height: 100%;
     font-size: 18px;
   }
   #frame .content .messages ul li > div p {
-    margin: 0 !important;
+    margin: 0;
     margin-top: 10px !important;
     line-height: 0px !important;
   }
   @media screen and (min-width: 735px) {
     #frame .content .messages ul li > div {
-      max-width: 300px;
+      max-width: 35%;
     }
   }
   #frame .content .message-input {

@@ -1,7 +1,16 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserCreationForm
+from django import forms
 
 user = get_user_model()
+
+class SignUpForm(UserCreationForm):
+    username = forms.CharField(max_length=30)
+
+    class Meta:
+        model = user
+        fields = ('username', 'password1', 'password2',)
 
 class Chat(models.Model):
     room_name = models.CharField(blank=True, max_length=50, verbose_name="نام اتاق")

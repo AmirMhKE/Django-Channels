@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
-from .models import Chat
+from django.contrib.auth import authenticate, login
+from .models import Chat, SignUpForm
 import json
 
 @login_required(login_url="login")
@@ -37,3 +38,16 @@ def room(request, room_name):
     }
 
     return render(request, "chat/room.html", context)
+
+def signup(request):
+    form = SignUpForm(request.POST)
+    if form.is_valid():
+        form.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('index')
+    else:
+        form = SignUpForm()
+    return render(request, 'chat/signup.html', {'form': form})
