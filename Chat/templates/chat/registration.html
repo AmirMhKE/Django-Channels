@@ -1,0 +1,48 @@
+{% extends "chat/base.html" %}
+{% load static %}
+{% block title %}ثبت نام / ورود{% endblock %}
+{% block main %}
+	<link rel="stylesheet" href="{% static 'registration.css' %}">
+	<div class="alert {% if form.errors %}alert-danger{% endif %} text-right errors">
+		{% for fields, errors in form.errors.items %}
+			{% for error in errors %}
+				<ul>
+					<li>{{error}}</li>
+				</ul>
+			{% endfor %}
+		{% endfor %}
+	</div>
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="main col-11 col-sm-10 col-md-7 col-lg-5">
+				<!-- signup -->
+				<form method="POST">{% csrf_token %}
+					<div class="signup">
+						<h2 class="title" id="signup"><span>یا</span>ثبت نام</h2>
+						<div class="holder">
+							<input type="text" class="input" name="username" placeholder="نام کاربری" />
+							<input type="password" class="input" name="password1" placeholder="رمز عبور" />
+							<input type="password" class="input" name="password2" placeholder="تکرار رمز عبور" />
+						</div>
+						<button class="submit" type="submit" name="submit" value="signup">ثبت نام</button>
+					</div>
+				</form>
+				<!-- login -->
+				<form method="POST">{% csrf_token %}
+					<div class="login slide-up">
+						<div class="center signup">
+							<h2 class="title"><span>یا</span>ورود</h2>
+							<div class="holder">
+								<input type="text" class="input" name="username" placeholder="نام کاربری" />
+								<input type="password" class="input" name="password" placeholder="رمز عبور" />
+							</div>
+							<button class="submit" type="submit" name="submit" value="login">ورود</button>
+						</div>
+					</div>
+				</form>
+				<!-- ***** -->
+			</div>
+		</div>
+	</div>
+	<script src="{% static 'registration.js' %}"></script>
+{% endblock %}

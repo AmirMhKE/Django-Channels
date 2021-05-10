@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from .models import Chat, SignUpForm
+from .models import Chat
+from .forms import SignUpForm
 import json
 
-@login_required(login_url="login")
+@login_required(login_url="registration")
 def index(request):
     user = request.user
     chat_rooms = Chat.objects.filter(members=user)
@@ -16,7 +17,7 @@ def index(request):
 
     return render(request, "chat/index.html", context)
 
-@login_required(login_url="login")
+@login_required(login_url="registration")
 def room(request, room_name):
     user = request.user
     chat_model = Chat.objects.filter(room_name=room_name)
@@ -39,15 +40,29 @@ def room(request, room_name):
 
     return render(request, "chat/room.html", context)
 
-def signup(request):
-    form = SignUpForm(request.POST)
-    if form.is_valid():
-        form.save()
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        return redirect('index')
-    else:
-        form = SignUpForm()
-    return render(request, 'chat/signup.html', {'form': form})
+def registration(request):
+    if request.method == "POST":
+        if request.POST.get("submit") == "signup":
+            form = SignUpForm(request.POST)
+            if form.is_valid():
+                form.save()
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                return redirect('index')
+            else:
+                return render(request, 'chat/registration.html', {"form": form})
+        elif request.POST.get("submit") == "login":
+            username = request.POST.get("username")
+            password = request.POST.get("password")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("index")
+            else:
+                msg = "نام کاربری و یا رمز عبوری که وارد کردید اشتباه است"
+                form = {"errors": {"error": [msg]}}
+                return render(request, 'chat/registration.html', {"form": form})
+
+    return render(request, "chat/registration.html")

@@ -1,0 +1,187 @@
+:root {
+    --color1: #f0f0f0;
+    --color2: #43dde6;
+    --color3: #4b538a;
+    --color4: #fc5158;
+}
+* {
+    transition: all 0.5s;
+    font-family: Shabnam, Arial, sans-serif;
+}
+body {
+    direction: rtl;
+}
+html,
+body {
+    background-color: var(--color1);
+}
+.main {
+    background-color: var(--color2);
+    border-radius: 15px;
+    min-height: 65vh;
+    margin-top: 20px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+@media screen and (min-height: 852px) {
+    .main {
+        min-height: 55vh;
+    }
+}
+@media screen and (min-height: 1000px) {
+    .main {
+        min-height: 45vh;
+    }
+}
+@media screen and (max-height: 768px) {
+    .main {
+        min-height: 75vh;
+    }
+}
+@media screen and (max-height: 576px) {
+    .main {
+        min-height: 95vh;
+    }
+}
+@media screen and (max-height: 492px) {
+    .main {
+        min-height: 110vh;
+    }
+}
+@media screen and (max-height: 422px) {
+    .main {
+        min-height: 120vh;
+    }
+}
+@media screen and (max-height: 422px) {
+    .main {
+        min-height: 130vh;
+    }
+}
+.signup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65%;
+    z-index: 5;
+}
+.signup.slide-up {
+    top: 5%;
+    transform: translate(-50%, 0%);
+}
+.signup.slide-up .title {
+    cursor: pointer;
+    font-size: 16px;
+}
+.title {
+    color: var(--color1);
+    font-size: 28px;
+    text-align: center;
+}
+.title span {
+    display: none;
+}
+.signup.slide-up span {
+    display: inline;
+    margin-left: 5px;
+    color: var(--color4);
+}
+.signup .holder {
+    border-radius: 15px;
+    background-color: var(--color4);
+    overflow: hidden;
+    margin-top: 50px;
+    border: 2px solid var(--color1);
+}
+.input {
+    border: none;
+    background: transparent;
+    outline: none;
+    height: 5%;
+    padding: 18px;
+    border-bottom: 2px solid var(--color1);
+    font-size: 14px;
+    width: 100%;
+    color: var(--color1);
+}
+.input:last-child {
+    border-bottom: 0;
+}
+.submit {
+    background-color: var(--color4);
+    color: var(--color1);
+    border: none;
+    border-radius: 15px;
+    margin: 15px auto;
+    padding: 15px 45px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+.signup .submit:hover {
+    background-color: var(--color1);
+    color: var(--color4);
+}
+.login {
+    position: absolute;
+    top: 20%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color3);
+    z-index: 5;
+}
+.container .login::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: -20px;
+    transform: translate(-50%, 0);
+    background-color: var(--color3);
+    width: 200%;
+    height: 250px;
+    border-radius: 50%;
+    z-index: 4;
+}
+.center {
+    top: calc(50% - 10%);
+}
+.login .holder {
+    border-radius: 15px;
+    background-color: var(--color4);
+    border: 2px solid var(--color1);
+    overflow: hidden;
+    margin-top: 50px;
+}
+.login .submit:hover {
+    background-color: var(--color1);
+    color: var(--color4);
+}
+.login.slide-up {
+    top: 90%;
+}
+.login.slide-up .center {
+    top: 10%;
+    transform: translate(-50%, 0%);
+}
+.login.slide-up .title {
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+.login.slide-up span {
+    color: var(--color4);
+    display: inline;
+    margin-left: 5px;
+}
+.errors ul {
+    list-style: disc;
+    padding: 0;
+}
+
+.errors ul li::marker {
+    color: var(--color4);
+}
