@@ -1,0 +1,22 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block main %}
+    {% if action_name == 'create' %}
+        <p>{{username}} آیا می خواهید {{room_name}} را ایجاد کنید و عضو آن شوید؟</p>
+        <form method="POST" action="{{url}}">{% csrf_token %}
+            <input type="hidden" name="room_name" value="{{room_name}}">
+            <input type="hidden" name="action_name" value="{{action_name}}">
+            <button type="submit">ایجاد گروه</button>
+        </form>
+        <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
+    {% else %}
+        <p>{{username}} آیا می خواهید عضو گروه {{room_name}} شوید؟</p>
+        <form method="POST" action="{{url}}">{% csrf_token %}
+            <input type="hidden" name="room_name" value="{{room_name}}">
+            <input type="hidden" name="action_name" value="{{action_name}}">
+            <button type="submit">عضو شدن</button>
+        </form>
+        <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
+    {% endif %}
+{% endblock %}

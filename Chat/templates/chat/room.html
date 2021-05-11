@@ -8,7 +8,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css"/>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
     rel="stylesheet" id="bootstrap-css"/>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'chat/style.css' %}" />
   </head>
   <body>
     <div id="frame">
@@ -39,8 +39,8 @@
     <input id="inp" type='file' accept="image/*" style="display:none" >
     <p id="b64"></p>
     {{ room_name|json_script:"room-name" }}
-    <script src="{% static 'reconnecting-websocket.js' %}"></script>
-    <script src="{% static 'room.js' %}"></script>
+    <script src="{% static 'chat/reconnecting-websocket.js' %}"></script>
+    <script src="{% static 'chat/room.js' %}"></script>
     <script>
       var username_ = {{username}};
       setUserName(username_);

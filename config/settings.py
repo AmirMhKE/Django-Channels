@@ -133,3 +133,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
+
+LOGIN_URL = 'registration'
+LOGIN_REDIRECT_URL = 'registration'
+LOGOUT_REDIRECT_URL = 'registration'

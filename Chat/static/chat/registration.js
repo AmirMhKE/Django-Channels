@@ -32,7 +32,7 @@ loginBtnV.addEventListener("click", (e) => {
     if(usernameValue === "" || passwordValue === "") {
         e.preventDefault();
         errorField.classList.add("alert-danger");
-        errorField.innerHTML = "<ul><li>لطفا بخش های لازم رو پر کنید</li></ul>";
+        errorField.innerHTML = "<ul><li>لطفا بخش های لازم رو پر کنید.</li></ul>";
     }
 });
 
@@ -44,6 +44,6 @@ signUpBtnV.addEventListener("click", (e) => {
     if(usernameValue === "" || password1Value === "" || password2Value === "") {
         e.preventDefault();
         errorField.classList.add("alert-danger");
-        errorField.innerHTML = "<ul><li>لطفا بخش های لازم رو پر کنید</li></ul>";
+        errorField.innerHTML = "<ul><li>لطفا بخش های لازم رو پر کنید.</li></ul>";
     }
 });

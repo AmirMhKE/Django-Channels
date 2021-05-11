@@ -1,0 +1,39 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+{% block title %}لیست گروه ها{% endblock %}
+{% block main %}
+<link rel="stylesheet" href="{% static 'chat/group_list.css' %}">
+<div class="container">
+	<div class="col-12">
+		<div class="col-12 col-md-10 mx-auto mb-4">
+			<h2 class="text-center py-3">وارد چه گروهی میخواهید بشوید؟ نام آن را وارد کنید.</h4>
+		</div>
+		<div class="col-12 col-md-10 mx-auto">
+			<div class="row">
+				<div class="col-12 col-md-9">
+					<input type="text" class="rounded myInp" placeholder="گروه خود را وارد کنید...">
+				</div>
+				<div class="col-12 col-md-3 mt-4 mt-md-0">
+					<button class="myBtn rounded">جستجو</button>
+				</div>
+			</div>
+		</div>
+  <hr class="col-12 mt-5">
+  <div class="col-12 col-md-10 mx-auto mb-4 my-5">
+	<h3 class="text-right py-3">لیست گروه هایی که عضو آنها هستید: (برای وارد شدن کلیک کنید.)</h3>
+  </div>
+  <div class="col-12 col-md-10 mx-auto">
+	<table class="table table-striped text-right">{% if chat_rooms %}
+			{% for chat in chat_rooms %}
+				<tr><td>
+					<a href="{{request.path}}{{chat.room_name}}/">{{chat.room_name}}</a>
+				</td></tr>
+			{% endfor %}{% endif %}</table>
+  </div>
+  <hr class="col-12 mt-5">
+	<p class="col-12 col-md-10 mt-4 text-right">
+		<a href="{% url 'logout' %}" class="log-out">خروج از حساب <span><i class="fas fa-sign-out-alt"></i></span></a>
+	</p>
+	</div>
+</div>
+{% endblock %}

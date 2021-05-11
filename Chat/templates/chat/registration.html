@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}ثبت نام / ورود{% endblock %}
 {% block main %}
-	<link rel="stylesheet" href="{% static 'registration.css' %}">
+	<link rel="stylesheet" href="{% static 'chat/registration.css' %}">
 	<div class="alert {% if form.errors %}alert-danger{% endif %} text-right errors">
 		{% for fields, errors in form.errors.items %}
 			{% for error in errors %}
@@ -44,5 +44,5 @@
 			</div>
 		</div>
 	</div>
-	<script src="{% static 'registration.js' %}"></script>
+	<script src="{% static 'chat/registration.js' %}"></script>
 {% endblock %}

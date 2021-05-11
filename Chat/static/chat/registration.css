@@ -1,9 +1,4 @@
-:root {
-    --color1: #f0f0f0;
-    --color2: #43dde6;
-    --color3: #4b538a;
-    --color4: #fc5158;
-}
+@import url(colors.css);
 * {
     transition: all 0.5s;
     font-family: Shabnam, Arial, sans-serif;

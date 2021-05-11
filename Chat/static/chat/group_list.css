@@ -1,0 +1,56 @@
+@import url(colors.css);
+* {
+    transition: all .5s ease-in-out;
+    font-family: Shabnam, Arial, sans-serif;
+    direction: rtl;
+}
+body {
+    background-color: var(--color1);
+}
+h2, h3 {
+    color: var(--color3);
+}
+.myBtn {
+    background-color: var(--color2);
+    color: white;
+    width: 100%;
+    padding: 15px 10px;
+    font-size: 1.2em;
+    outline: none;
+    border: 2px solid var(--color3);
+}
+.myBtn:hover {
+    background-color: var(--color4);
+}
+.myInp {
+    padding: 15px 10px !important;
+    width: 100%;
+    outline: none;
+    border: 2px solid var(--color3);
+    font-size: 1.2em;
+}
+.myInp:hover {
+    background-color: var(--color4);
+    color: white;
+}
+.myInp:focus {
+    background-color: var(--color4);
+    color: white;
+}
+table tr td a {
+    color: var(--color3);
+    font-size: 1.5em;
+}
+table tr td a:hover {
+    color: var(--color3);
+}
+table:empty::before {
+	content: "شما عضو هیچ گروهی نیستید!";
+	color: var(--color4);
+}
+.log-out {
+    color: var(--color3);
+}
+.log-out:hover {
+    color: var(--color3);
+}
