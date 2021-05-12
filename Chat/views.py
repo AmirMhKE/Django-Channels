@@ -13,7 +13,20 @@ def home(request):
     chat_rooms = Chat.objects.filter(members=user)
 
     context = {
-        "chat_rooms": chat_rooms
+        "chat_rooms": chat_rooms,
+        "type": "list"
+    }
+
+    return render(request, "chat/group_list.html", context)
+
+@login_required
+def room_search(request, search_name):
+    chat_search = Chat.objects.filter(room_name__icontains=search_name)
+
+    context = {
+        "chat_rooms": chat_search,
+        "search_name": search_name,
+        "type": "search_list"
     }
 
     return render(request, "chat/group_list.html", context)
@@ -57,14 +70,35 @@ def room(request, room_name):
     return render(request, "chat/room.html", context)
 
 @login_required
+def room_leave(request, room_name):
+    user = request.user
+    chat = Chat.objects.filter(room_name=room_name)
+
+    if chat.exists():
+        if request.method == "POST":
+            if user.is_superuser and request.POST.get("room_name") == room_name + "__delete":
+                chat[0].delete()
+                return redirect("home")
+
+            if user in chat[0].members.all() and request.POST.get("room_name") == room_name:
+                chat[0].members.remove(user)
+        else:
+            if user in chat[0].members.all():
+                return redirect("room_confirm", room_name=room_name, action_name="leave")
+
+    return redirect("home")
+
+@login_required
 def room_confirm(request, room_name, action_name):
-    if action_name not in ["join", "create"]:
+    actions_list = ["join", "create", "leave"]
+    if action_name not in actions_list:
         return redirect("home")
 
     user = request.user
     chat_model = Chat.objects.filter(room_name=room_name)
 
     context = {
+        "chat": (lambda chat: chat_model[0] if chat.exists() else "")(chat_model),
         "room_name": room_name,
         "action_name": action_name,
         "username": request.user.username,
@@ -72,17 +106,23 @@ def room_confirm(request, room_name, action_name):
     }
 
     if chat_model.exists():
-        if user in chat_model[0].members.all() and action_name == "join":
-            return redirect("room", room_name=room_name)
-        elif action_name == "join":
-            return render(request, "chat/room_confirm.html", context)
+        if user in chat_model[0].members.all():
+            if action_name == "join":
+                return redirect("room", room_name=room_name)
+            elif action_name == "leave":
+                return render(request, "chat/room_leave_confirm.html", context)
         else:
-            return redirect("home")
+            if action_name == "join":
+                return render(request, "chat/room_confirm.html", context)
+            elif action_name == "leave" and user.is_superuser:
+                return render(request, "chat/room_leave_confirm.html", context)
     elif not chat_model.exists():
         if user.is_superuser and action_name == "create":
             return render(request, "chat/room_confirm.html", context)
         else:
-            return redirect("home")
+            pass
+
+    return redirect("home")
 
 def registration(request):
     if request.method == "POST":
@@ -98,7 +138,6 @@ def registration(request):
             else:
                 return render(request, 'chat/registration.html', {"form": form})
         elif request.POST.get("submit") == "login":
-            print(request.POST)
             username = request.POST.get("username")
             password = request.POST.get("password")
             user = authenticate(username=username, password=password)

@@ -6,34 +6,81 @@
 <div class="container">
 	<div class="col-12">
 		<div class="col-12 col-md-10 mx-auto mb-4">
-			<h2 class="text-center py-3">وارد چه گروهی میخواهید بشوید؟ نام آن را وارد کنید.</h4>
+			{% if not user.is_superuser %}
+				<h2 class="text-justify py-3">وارد چه گروهی میخواهید بشوید؟ نام آن را وارد کنید.</h2>
+			{% else %}
+				<h2 class="text-justify py-3">وارد چه گروهی می خواهید بشوید و یا چه گروهی میخواهید ایجاد کنید؟ نام آن را وارد کنید.</h2>
+			{% endif %}
 		</div>
 		<div class="col-12 col-md-10 mx-auto">
 			<div class="row">
 				<div class="col-12 col-md-9">
-					<input type="text" class="rounded myInp" placeholder="گروه خود را وارد کنید...">
+					<input type="text" id="room-search-input" 
+					class="rounded myInp" placeholder="گروه خود را وارد کنید...">
 				</div>
 				<div class="col-12 col-md-3 mt-4 mt-md-0">
-					<button class="myBtn rounded">جستجو</button>
+					<button class="myBtn rounded" id="room-search-btn">جستجو</button>
 				</div>
 			</div>
 		</div>
+		{% if user.is_superuser %}
+			<div class="col-12 col-md-10 mx-auto mt-4">
+				<div class="row">
+					<div class="col-12 col-md-9">
+						<input type="text" class="rounded myInp" id="room-create-input" placeholder="گروه خود را وارد کنید...">
+					</div>
+					<div class="col-12 col-md-3 mt-4 mt-md-0">
+						<button class="myBtn rounded" id="room-create-btn">ایجاد گروه</button>
+					</div>
+				</div>
+			</div>
+		{% endif %}
   <hr class="col-12 mt-5">
   <div class="col-12 col-md-10 mx-auto mb-4 my-5">
-	<h3 class="text-right py-3">لیست گروه هایی که عضو آنها هستید: (برای وارد شدن کلیک کنید.)</h3>
+	{% if type == 'list' %}
+		<h3 class="text-right py-3">لیست گروه هایی که عضو آنها هستید: (برای وارد شدن کلیک کنید.)</h3>
+	{% else %}
+		<h3 class="text-right py-3">نتایج جستجوی {{search_name}}: (برای عضو شدن کلیک کنید.)</h3>
+	{% endif %}
   </div>
   <div class="col-12 col-md-10 mx-auto">
-	<table class="table table-striped text-right">{% if chat_rooms %}
-			{% for chat in chat_rooms %}
-				<tr><td>
-					<a href="{{request.path}}{{chat.room_name}}/">{{chat.room_name}}</a>
-				</td></tr>
-			{% endfor %}{% endif %}</table>
+	<table class="table table-striped text-right">
+		{% for chat in chat_rooms %}
+			<tr><td class="row">
+				{% if type == 'list' %}
+					<div class="col-1"></div>
+					<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far fa-comment"></i></span> گروه {{chat.room_name}}</a>
+					{% if not request.user.is_superuser %}
+						<a class="col-5 text-left" href="/chat/{{chat.room_name}}/leave">خارج شدن از گروه <span><i class="fas fa-sign-out-alt"></i></a>
+					{% else %}
+						<a class="col-5 text-left" href="/chat/{{chat.room_name}}/leave">خارج شدن از گروه یا حذف آن <span><i class="fas fa-sign-out-alt"></i></a>
+					{% endif %}
+				{% else %}
+					<a class="col-12 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far fa-comment"></i></span> گروه {{chat.room_name}} {% if request.user in chat.members.all %}(شما عضو این گروه هستید.){% endif %}</a>
+				{% endif %}
+				
+			</td></tr>
+		{% empty %}
+			{% if type == 'list' %}
+				<p class="not-found text-right">شما عضو هیچ گروهی نیستید!</p>
+			{% else %}
+				<p class="not-found text-right">چیزی یافت نشد!</p>
+			{% endif %}
+		{% endfor %}
+	</table>
   </div>
   <hr class="col-12 mt-5">
-	<p class="col-12 col-md-10 mt-4 text-right">
-		<a href="{% url 'logout' %}" class="log-out">خروج از حساب <span><i class="fas fa-sign-out-alt"></i></span></a>
-	</p>
+	<div class="row">
+		<p class="col-6 mt-4 text-right">
+			<a href="{% url 'logout' %}" class="log-out">خروج از حساب <span><i class="fas fa-sign-out-alt"></i></span></a>
+		</p>
+		{% if type == 'search_list' %}
+			<p class="col-6 mt-4 text-left">
+				<a href="{% url 'home' %}" class="home">صفحه اصلی <span><i class="fa fa-home"></i></span></a>
+			</p>
+		{% endif %}
+	</div>
 	</div>
 </div>
+<script src="{% static 'chat/group_list.js' %}"></script>
 {% endblock %}

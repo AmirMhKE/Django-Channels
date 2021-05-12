@@ -1,0 +1,18 @@
+{% extends 'chat/base.html' %}
+{% block title %}Group Leave{% endblock %}
+{% block main %}
+    <p>{{username}} آیا مطمئنید که می خواهید از گروه {{room_name}} خارج شوید؟</p>
+    {% if user in chat.members.all %}
+        <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+            <input type="hidden" name="room_name" value="{{room_name}}">
+            <button type="submit">خارج شدن از گروه</button>
+        </form>
+    {% endif %}
+    {% if user.is_superuser %}
+        <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+            <input type="hidden" name="room_name" value="{{room_name}}__delete">
+            <button type="submit">حذف کامل گروه</button>
+        </form>
+    {% endif %}
+    <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
+{% endblock %}

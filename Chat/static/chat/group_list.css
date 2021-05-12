@@ -44,13 +44,26 @@ table tr td a {
 table tr td a:hover {
     color: var(--color3);
 }
-table:empty::before {
-	content: "شما عضو هیچ گروهی نیستید!";
+.not-found {
 	color: var(--color4);
 }
-.log-out {
+.log-out, .home {
     color: var(--color3);
 }
-.log-out:hover {
+.log-out:hover, .home:hover {
     color: var(--color3);
+}
+@media screen and (max-width: 767px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+    h3 {
+        font-size: 1.3rem;
+    }
+    .myBtn, .myInp {
+        font-size: 1rem;
+    }
+    table tr td a {
+        font-size: 1.2rem;
+    }
 }
