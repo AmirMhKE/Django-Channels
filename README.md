@@ -2,6 +2,6 @@
 <b>The Django simple chat application</b>
 <hr>
 # How to use
-```terminal
+```cmd
 git clone test
 ```
