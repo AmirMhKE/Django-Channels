@@ -56,7 +56,17 @@
 						<a class="col-5 text-left" href="/chat/{{chat.room_name}}/leave">خارج شدن از گروه یا حذف آن <span><i class="fas fa-sign-out-alt"></i></a>
 					{% endif %}
 				{% else %}
-					<a class="col-12 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far fa-comment"></i></span> گروه {{chat.room_name}} {% if request.user in chat.members.all %}(شما عضو این گروه هستید.){% endif %}</a>
+					{% if request.user not in chat.members.all %}
+						<a class="col-12 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span> گروه {{chat.room_name}}</a>
+					{% else %}
+						<div class="col-1"></div>
+						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far fa-comment"></i></span> گروه {{chat.room_name}} {% if request.user in chat.members.all %}(شما عضو این گروه هستید.){% endif %}</a>
+						{% if not request.user.is_superuser %}
+							<a class="col-5 text-left" href="/chat/{{chat.room_name}}/leave">خارج شدن از گروه 	<span><i class="fas fa-sign-out-alt"></i></a>
+						{% else %}
+							<a class="col-5 text-left" href="/chat/{{chat.room_name}}/leave">خارج شدن از گروه یا حذف آن <span><i class="fas fa-sign-out-alt"></i></a>
+						{% endif %}
+					{% endif %}
 				{% endif %}
 				
 			</td></tr>
@@ -69,6 +79,92 @@
 		{% endfor %}
 	</table>
   </div>
+  {% if paginator.num_pages > 1 %}
+	<nav class="col-12 col-md-10 mx-auto mt-5">
+		<ul class="pagination pagination-lg d-flex flex-wrap justify-content-center">
+		{% if chat_rooms.has_previous %}
+			<li class="page-item">
+				<a class="page-link" href="{{page_url}}{{chat_rooms.previous_page_number}}/">
+				<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+		{% endif %}
+		{% for p in paginator.page_range %}
+			{% if paginator.num_pages < 9 %}
+				{% if p == page %}
+					<li class="page-item active">
+						<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+					</li>
+				{% else %}
+					<li class="page-item">
+						<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+					</li>
+				{% endif %}
+			{% else %}
+				{% if page < 4 %}
+					{% if p == page %}
+						<li class="page-item active">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% elif p == 5 %}
+						<li class="page-item">
+							<a href="{{main_url}}" class="page-link">...</a>
+						</li>
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% elif p < 9 %}
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% endif %}
+				{% elif page >= 4 and page < paginator.num_pages|add:"-3" %}
+					{% if p == page %}
+						<li class="page-item active">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% elif p == page|add:"+1" %}
+						<li class="page-item">
+							<a href="{{main_url}}" class="page-link">...</a>
+						</li>
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% elif p >= page|add:"-3" and p < page or p > page and p <= page|add:"+4" %}
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% endif %}
+				{% elif page >= paginator.num_pages|add:"-3" %}
+					{% if p == page %}
+						<li class="page-item active">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% elif p == paginator.num_pages|add:"-4" %}
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+						<li class="page-item">
+							<a href="{{main_url}}" class="page-link">...</a>
+						</li>
+					{% elif p >= paginator.num_pages|add:"-7" %}
+						<li class="page-item">
+							<a href="{{page_url}}{{p}}/" class="page-link">{{p}}</a>
+						</li>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+		{% if chat_rooms.has_next %}
+			<li class="page-item">
+				<a class="page-link" href="{{page_url}}{{chat_rooms.next_page_number}}/">
+				<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		{% endif %}
+		</ul>
+	</nav>
+  {% endif %}
   <hr class="col-12 mt-5">
 	<div class="row">
 		<p class="col-6 mt-4 text-right">

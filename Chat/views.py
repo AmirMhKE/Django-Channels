@@ -2,17 +2,28 @@ from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.urls import reverse
+from django.core.paginator import EmptyPage, Paginator
 from .models import Chat
 from .forms import SignUpForm
 import json
 
 @login_required
-def home(request):
+def home(request, page=1):
     user = request.user
-    chat_rooms = Chat.objects.filter(members=user)
+    chats = Chat.objects.filter(members=user)
+    paginator = Paginator(chats, 5)
+
+    try:
+        chat_rooms = paginator.page(page)
+    except EmptyPage:
+        chat_rooms = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
 
     context = {
+        "page": page,
+        "main_url": "/chat/",
+        "page_url": "/chat/page/",
+        "paginator": paginator,
         "chat_rooms": chat_rooms,
         "type": "list"
     }
@@ -20,11 +31,22 @@ def home(request):
     return render(request, "chat/group_list.html", context)
 
 @login_required
-def room_search(request, search_name):
+def room_search(request, search_name, page=1):
     chat_search = Chat.objects.filter(room_name__icontains=search_name)
+    paginator = Paginator(chat_search, 5)
+    
+    try:
+        chat_rooms = paginator.page(page)
+    except EmptyPage:
+        chat_rooms = paginator.page(paginator.num_pages)
+        page = paginator.num_pages
 
     context = {
-        "chat_rooms": chat_search,
+        "page": page,
+        "main_url": f"/chat/search/{search_name}/",
+        "page_url": f"/chat/search/{search_name}/page/",
+        "paginator": paginator,
+        "chat_rooms": chat_rooms,
         "search_name": search_name,
         "type": "search_list"
     }

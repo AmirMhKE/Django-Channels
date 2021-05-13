@@ -17,6 +17,12 @@
             <input type="hidden" name="action_name" value="{{action_name}}">
             <button type="submit">عضو شدن</button>
         </form>
+        {% if user.is_superuser %}
+            <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+                <input type="hidden" name="room_name" value="{{room_name}}__delete">
+                <button type="submit">حذف کامل گروه</button>
+            </form>
+        {% endif %}
         <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
     {% endif %}
 {% endblock %}

@@ -53,6 +53,18 @@ table tr td a:hover {
 .log-out:hover, .home:hover {
     color: var(--color3);
 }
+.page-link {
+    background-color: var(--color1);
+    color: var(--color3);
+}
+.page-item.active .page-link {
+    background-color: var(--color2);
+    border: 1px solid var(--color2);
+}
+.page-link:hover {
+    background-color: var(--color1);
+    border-color: var(--color2);
+}
 @media screen and (max-width: 767px) {
     h2 {
         font-size: 1.5rem;
@@ -65,5 +77,9 @@ table tr td a:hover {
     }
     table tr td a {
         font-size: 1.2rem;
+    }
+    .pagination-lg .page-link {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
     }
 }
