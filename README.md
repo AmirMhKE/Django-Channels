@@ -3,5 +3,5 @@
 <hr>
 # How to use
 ```cmd
-git clone test
+git clone felan
 ```
