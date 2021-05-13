@@ -4,6 +4,6 @@
 
 ## How to use
 
-```cmd
+```bash
 git clone felan
 ```
