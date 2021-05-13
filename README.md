@@ -1,7 +1,8 @@
 # Django Channels
 <b>The Django simple chat application</b>
 <hr>
-# How to use
+## How to use
+
 ```cmd
 git clone felan
 ```
