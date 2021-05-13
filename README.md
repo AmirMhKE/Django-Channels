@@ -6,5 +6,6 @@
 ## How to use
 
 ```bash
-git clone felan
+git clone https://github.com/AmirMhKE/Django-Channels.git
+cd Django-Channels
 ```
