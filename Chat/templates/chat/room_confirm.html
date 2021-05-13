@@ -2,27 +2,44 @@
 {% load static %}
 {% block title %}{% endblock %}
 {% block main %}
-    {% if action_name == 'create' %}
-        <p>{{username}} آیا می خواهید {{room_name}} را ایجاد کنید و عضو آن شوید؟</p>
-        <form method="POST" action="{{url}}">{% csrf_token %}
-            <input type="hidden" name="room_name" value="{{room_name}}">
-            <input type="hidden" name="action_name" value="{{action_name}}">
-            <button type="submit">ایجاد گروه</button>
-        </form>
-        <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
-    {% else %}
-        <p>{{username}} آیا می خواهید عضو گروه {{room_name}} شوید؟</p>
-        <form method="POST" action="{{url}}">{% csrf_token %}
-            <input type="hidden" name="room_name" value="{{room_name}}">
-            <input type="hidden" name="action_name" value="{{action_name}}">
-            <button type="submit">عضو شدن</button>
-        </form>
-        {% if user.is_superuser %}
-            <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
-                <input type="hidden" name="room_name" value="{{room_name}}__delete">
-                <button type="submit">حذف کامل گروه</button>
-            </form>
+    <link rel="stylesheet" href="{% static 'chat/room.css' %}">
+    <div class="container">
+        {% if action_name == 'create' %}
+            <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می خواهید <b><u>{{room_name}}</u></b> را ایجاد کنید و عضو آن شوید؟</h3>
+            <div class="row col-12 col-md-10 mx-0 mx-md-auto d-flex justify-content-center mt-5">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form method="POST" action="{{url}}">{% csrf_token %}
+                        <input type="hidden" name="room_name" value="{{room_name}}">
+                        <input type="hidden" name="action_name" value="{{action_name}}">
+                        <button type="submit" class="rounded btn-color-2">ایجاد گروه</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <button onclick="window.location.pathname='/chat/'" class="rounded btn-color-4">لغو عملیات</button>
+            </div>
+        {% else %}
+            <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می خواهید عضو گروه <b><u>{{room_name}}</u></b> شوید؟</h3>
+            <div class="row col-12 col-md-10 mx-0 mx-md-auto d-flex justify-content-center mt-5">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form method="POST" action="{{url}}">{% csrf_token %}
+                        <input type="hidden" name="room_name" value="{{room_name}}">
+                        <input type="hidden" name="action_name" value="{{action_name}}">
+                        <button type="submit" class="rounded btn-color-2">عضو شدن</button>
+                    </form>
+                </div>
+                {% if user.is_superuser %}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+                            <input type="hidden" name="room_name" value="{{room_name}}__delete">
+                            <button type="submit" class="rounded btn-color-4">حذف کامل گروه</button>
+                        </form>
+                    </div>
+                {% endif %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <button onclick="window.location.pathname='/chat/'" class="rounded btn-color-3">لغو عملیات</button>
+                </div>
+            </div>
         {% endif %}
-        <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
-    {% endif %}
+    </div>
 {% endblock %}

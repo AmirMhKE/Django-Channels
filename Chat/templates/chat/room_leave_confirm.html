@@ -1,18 +1,30 @@
 {% extends 'chat/base.html' %}
+{% load static %}
 {% block title %}Group Leave{% endblock %}
 {% block main %}
-    <p>{{username}} آیا مطمئنید که می خواهید از گروه {{room_name}} خارج شوید؟</p>
-    {% if user in chat.members.all %}
-        <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
-            <input type="hidden" name="room_name" value="{{room_name}}">
-            <button type="submit">خارج شدن از گروه</button>
-        </form>
-    {% endif %}
-    {% if user.is_superuser %}
-        <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
-            <input type="hidden" name="room_name" value="{{room_name}}__delete">
-            <button type="submit">حذف کامل گروه</button>
-        </form>
-    {% endif %}
-    <button onclick="window.location.pathname='/chat/'">لغو عملیات</button>
+    <link rel="stylesheet" href="{% static 'chat/room.css' %}">
+    <div class="container">
+        <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا مطمئنید که می خواهید از گروه <b><u>{{room_name}}</u></b> خارج شوید؟</h3>
+        <div class="row col-12 col-md-10 mx-0 mx-md-auto d-flex justify-content-center mt-5">
+            {% if user in chat.members.all %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+                        <input type="hidden" name="room_name" value="{{room_name}}">
+                        <button type="submit" class="rounded btn-color-2">خارج شدن از گروه</button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if user.is_superuser %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <form method="POST" action="/chat/{{room_name}}/leave/">{% csrf_token %}
+                        <input type="hidden" name="room_name" value="{{room_name}}__delete">
+                        <button type="submit" class="rounded btn-color-4">حذف کامل گروه</button>
+                    </form>
+                </div>
+            {% endif %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <button class="rounded btn-color-3" onclick="window.location.pathname='/chat/'">لغو عملیات</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}

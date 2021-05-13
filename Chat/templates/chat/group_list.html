@@ -57,7 +57,11 @@
 					{% endif %}
 				{% else %}
 					{% if request.user not in chat.members.all %}
-						<a class="col-12 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span> گروه {{chat.room_name}}</a>
+						<div class="col-1"></div>
+						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span> گروه {{chat.room_name}}</a>
+						<a href="/chat/{{chat.room_name}}/"" class="col-5 text-left">
+						برای عضو شدن کلیک کنید <span><i class="fa fa-plus"></i></span>
+						</a>
 					{% else %}
 						<div class="col-1"></div>
 						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far fa-comment"></i></span> گروه {{chat.room_name}} {% if request.user in chat.members.all %}(شما عضو این گروه هستید.){% endif %}</a>

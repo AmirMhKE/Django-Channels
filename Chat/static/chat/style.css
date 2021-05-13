@@ -110,6 +110,7 @@ body {
     float: left;
   }
   #frame .content .messages ul li.replies > div {
+    display: inline-block;
     background: #f5f5f5;
   }
   #frame .content .messages ul li.replies {
