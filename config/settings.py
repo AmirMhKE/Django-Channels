@@ -25,7 +25,14 @@ SECRET_KEY = '$o+@r1d4e#(=i++!r$9^tlzg4!hz!vq#hp_$ng$55tgba4&!7#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG is False:
+    ALLOWED_HOSTS = [
+        '127.0.0.1:8000',
+        '*',
+    ]
+
+if DEBUG is True:
+    ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -39,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'channels',
-    'Chat',
+    'account.apps.AccountConfig',
+    'Chat.apps.ChatConfig',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +145,4 @@ STATICFILES_DIRS = [
 LOGIN_URL = 'registration'
 LOGIN_REDIRECT_URL = 'registration'
 LOGOUT_REDIRECT_URL = 'registration'
+AUTH_USER_MODEL = 'account.User'

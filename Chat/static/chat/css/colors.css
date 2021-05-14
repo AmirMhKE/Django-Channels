@@ -1,0 +1,21 @@
+:root {
+    --color1: #f0f0f0;
+    --color2: #43dde6;
+    --color3: #4b538a;
+    --color4: #fc5158;
+}
+::selection {
+    background-color: var(--color2);
+    color: var(--color3);
+}
+::-webkit-scrollbar {
+    width: 10px;
+}  
+::-webkit-scrollbar-track {
+    background: var(--color1);
+    border-radius: 30px; 
+}  
+::-webkit-scrollbar-thumb {
+    background: var(--color3);
+    border-radius: 30px; 
+}

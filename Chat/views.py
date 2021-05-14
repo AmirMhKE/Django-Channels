@@ -1,11 +1,31 @@
 from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.core.paginator import EmptyPage, Paginator
 from .models import Chat
-from .forms import SignUpForm
+from account.forms import SignUpForm
 import json
+
+def handler400(request, exception=None):
+    return redirect("home")
+
+def handler403(request, exception=None):
+    return redirect("home")
+
+def handler404(request, exception):
+    return redirect("home")
+
+def handler500(request, exception=None):
+    return redirect("home")
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 @login_required
 def home(request, page=1):
@@ -149,13 +169,24 @@ def room_confirm(request, room_name, action_name):
 def registration(request):
     if request.method == "POST":
         if request.POST.get("submit") == "signup":
+            ip = get_client_ip(request)
             form = SignUpForm(request.POST)
+            ip_check = get_user_model().objects.filter(ip_address=ip)
+
+            if ip_check:
+                error_msg = "شما قبلا با این دستگاه یک اکانت ساخته اید و نمی توانید بیش از یک اکانت داشته باشید."
+                form = {"errors": {"error": [error_msg]}}
+                return render(request, 'chat/registration.html', {"form": form})
+
             if form.is_valid():
                 form.save()
                 username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=password)
                 login(request, user)
+                get_user = get_user_model().objects.filter(username=username)[0]
+                get_user.ip_address = ip
+                get_user.save()
                 return redirect('home')
             else:
                 return render(request, 'chat/registration.html', {"form": form})

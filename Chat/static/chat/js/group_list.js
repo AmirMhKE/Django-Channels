@@ -4,6 +4,12 @@ document.querySelector("#room-search-input").onkeyup = function (e) {
     }
 };
 
+document.querySelector("#room-create-input").onkeyup = function (e) {
+    if (e.keyCode === 13) { // enter, return
+        document.querySelector("#room-create-btn").click();
+    }
+};
+
 document.querySelector("#room-search-btn").onclick = function (e) {
     var searchName = document.querySelector("#room-search-input").value;
     

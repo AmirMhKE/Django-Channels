@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}{% endblock %}
 {% block main %}
-    <link rel="stylesheet" href="{% static 'chat/room.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/css/room.css' %}">
     <div class="container">
         {% if action_name == 'create' %}
             <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می خواهید <b><u>{{room_name}}</u></b> را ایجاد کنید و عضو آن شوید؟</h3>
@@ -14,9 +14,9 @@
                         <button type="submit" class="rounded btn-color-2">ایجاد گروه</button>
                     </form>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <button onclick="window.location.pathname='/chat/'" class="rounded btn-color-4">لغو عملیات</button>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <button onclick="window.location.pathname='/chat/'" class="rounded btn-color-4">لغو عملیات</button>
+                </div>
             </div>
         {% else %}
             <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می خواهید عضو گروه <b><u>{{room_name}}</u></b> شوید؟</h3>
