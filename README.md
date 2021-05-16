@@ -16,4 +16,4 @@ docker run -p6379:6379 redis
 python manage.py runserver
 ```
 ## Finish
-Open tab http://localhost:8000/chat/ in browser
+Open tab http://127.0.0.1:8000/chat/ in browser
