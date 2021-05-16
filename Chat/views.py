@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
-from django.utils.safestring import mark_safe
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, get_user_model
-from django.core.paginator import EmptyPage, Paginator
-from .models import Chat
-from account.forms import SignUpForm
 import json
+import urllib
+
+from account.forms import SignUpForm
+from config import settings
+from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, Paginator
+from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
+
+from .models import Chat
+
 
 def handler400(request, exception=None):
     return redirect("home")
@@ -168,6 +173,24 @@ def room_confirm(request, room_name, action_name):
 
 def registration(request):
     if request.method == "POST":
+        # google captcha
+        recaptcha_response = request.POST.get('g-recaptcha-response')
+        url = 'https://www.google.com/recaptcha/api/siteverify'
+        values = {
+            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+            'response': recaptcha_response
+        }
+        data = urllib.parse.urlencode(values).encode()
+        req =  urllib.request.Request(url, data=data)
+        response = urllib.request.urlopen(req)
+        result = json.loads(response.read().decode())
+
+        if not result["success"]:
+            error_msg = "لطفا تیک من ربات نیستم را بزنید."
+            form = {"errors": {"error": [error_msg]}}
+            return render(request, 'chat/registration.html', {"form": form})
+        # end google captcha
+
         if request.POST.get("submit") == "signup":
             ip = get_client_ip(request)
             form = SignUpForm(request.POST)

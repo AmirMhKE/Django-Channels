@@ -146,3 +146,5 @@ LOGIN_URL = 'registration'
 LOGIN_REDIRECT_URL = 'registration'
 LOGOUT_REDIRECT_URL = 'registration'
 AUTH_USER_MODEL = 'account.User'
+
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LdxWdcaAAAAAHLMg67Uzds4GHWXI-T1cCAnUyWm'

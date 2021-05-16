@@ -5,6 +5,7 @@
 }
 body {
     direction: rtl;
+    overflow-x: hidden;
 }
 html,
 body {
