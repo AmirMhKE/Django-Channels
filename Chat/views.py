@@ -3,9 +3,12 @@ import urllib
 
 from account.forms import SignUpForm
 from config import settings
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import (authenticate, get_user_model, login,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.core.paginator import EmptyPage, Paginator
+from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
 
@@ -31,6 +34,12 @@ def get_client_ip(request):
     else:
         ip = request.META.get('REMOTE_ADDR')
     return ip
+
+def get_case_insensitive_username(username):
+    try:
+        return get_user_model().objects.filter(username__iexact=username)[0].username
+    except IndexError:
+        return None
 
 @login_required
 def home(request, page=1):
@@ -171,29 +180,33 @@ def room_confirm(request, room_name, action_name):
 
     return redirect("home")
 
+def check_captcha(request):
+    recaptcha_response = request.POST.get('g-recaptcha-response')
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    values = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+    }
+    data = urllib.parse.urlencode(values).encode()
+    req =  urllib.request.Request(url, data=data)
+    response = urllib.request.urlopen(req)
+    result = json.loads(response.read().decode())
+
+    return result["success"]
+
 def registration(request):
     if request.method == "POST":
-        # google captcha
-        recaptcha_response = request.POST.get('g-recaptcha-response')
-        url = 'https://www.google.com/recaptcha/api/siteverify'
-        values = {
-            'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
-            'response': recaptcha_response
-        }
-        data = urllib.parse.urlencode(values).encode()
-        req =  urllib.request.Request(url, data=data)
-        response = urllib.request.urlopen(req)
-        result = json.loads(response.read().decode())
-
-        if not result["success"]:
+        if not check_captcha(request):
             error_msg = "لطفا تیک من ربات نیستم را بزنید."
             form = {"errors": {"error": [error_msg]}}
             return render(request, 'chat/registration.html', {"form": form})
-        # end google captcha
 
         if request.POST.get("submit") == "signup":
             ip = get_client_ip(request)
-            form = SignUpForm(request.POST)
+            data = request.POST.copy()
+            data._mutable = True
+            data.update({"username": data["username-signup"]})
+            form = SignUpForm(data)
             ip_check = get_user_model().objects.filter(ip_address=ip)
 
             if ip_check:
@@ -202,9 +215,16 @@ def registration(request):
                 return render(request, 'chat/registration.html', {"form": form})
 
             if form.is_valid():
-                form.save()
                 username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password1')
+                # Check CaseInsensitive
+                check_user = get_case_insensitive_username(username)
+                if check_user:
+                    error_msg = "کاربری با آن نام کاربری وجود دارد."
+                    form = {"errors": {"error": [error_msg]}}
+                    return render(request, 'chat/registration.html', {"form": form})
+                # End Check CaseInsensitive
+                form.save()
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 get_user = get_user_model().objects.filter(username=username)[0]
@@ -214,7 +234,9 @@ def registration(request):
             else:
                 return render(request, 'chat/registration.html', {"form": form})
         elif request.POST.get("submit") == "login":
-            username = request.POST.get("username")
+            username = request.POST.get("username-login")
+            # CaseInsensitive
+            username = get_case_insensitive_username(username)
             password = request.POST.get("password")
             user = authenticate(username=username, password=password)
             if user is not None:
@@ -226,3 +248,57 @@ def registration(request):
                 return render(request, 'chat/registration.html', {"form": form})
 
     return render(request, "chat/registration.html")
+
+@login_required
+def user_update(request, username):
+    user = get_user_model()
+    # Check CaseInsensitive
+    i_user = get_case_insensitive_username(username)
+    if i_user and i_user != username:
+        return redirect("user-update", username=get_case_insensitive_username(username))
+
+    context = {
+        "username": username
+    }
+
+    if username == request.user.username:
+        if request.method == "POST":
+            if request.POST.get("submit") == "change_username":
+                form_username = request.POST.get("username")
+                if form_username.replace(" ", ""):
+                    if not get_case_insensitive_username(form_username) or \
+                    form_username.lower() == request.user.username.lower():
+                        self_user = user.objects.get(username=username)
+                        self_user.username = form_username
+                        self_user.save()
+                        return redirect("user-update", username=form_username)
+            
+                if not form_username.replace(" ", ""):
+                    context.update({"username_error": "این مقدار لازم است."})
+                else:
+                    context.update({"username_error": "این نام کاربری وجود دارد."})
+            else:
+                # change password
+                password_change_form = PasswordChangeForm(request.user, request.POST)
+                context.update({"form": password_change_form})
+                if password_change_form.is_valid():
+                    self_user = password_change_form.save()
+                    update_session_auth_hash(request, self_user)
+                    context.update({"password_changed": True})
+        
+        return render(request, "chat/user_update.html", context)
+
+    return redirect("home")
+
+@login_required
+def delete_account(request, username):
+    if request.user.username == username:
+        if request.method == "POST":
+            if request.POST.get("user") == username:
+                user = get_user_model().objects.get(username=username)
+                user.delete()
+                return redirect("registration")
+
+        return render(request, "chat/remove_account_confirm.html")
+
+    return redirect("home")

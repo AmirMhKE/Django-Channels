@@ -36,12 +36,13 @@
 			</div>
 		{% endif %}
   <hr class="col-12 mt-5">
-  <div class="col-12 col-md-10 mx-auto mb-4 my-5">
+  <div class="col-12 col-md-10 mx-auto mb-4 my-5 row">
 	{% if type == 'list' %}
-		<h3 class="text-right py-3">لیست گروه هایی که عضو آنها هستید: (برای وارد شدن کلیک کنید.)</h3>
+		<h3 class="text-right py-3 col-11">لیست گروه هایی که عضو آنها هستید: (برای وارد شدن کلیک کنید.)</h3>
 	{% else %}
-		<h3 class="text-right py-3">نتایج جستجوی {{search_name}}: (برای عضو شدن کلیک کنید.)</h3>
+		<h3 class="text-right py-3 col-11"><span><i class="fa fa-search"></i></span> نتایج جستجوی {{search_name}}:</h3>
 	{% endif %}
+	<a title="تنظیمات حساب کاربری" class="py-3 text-left setting col-1" href="{% url 'user-update' request.user.username %}"><span><i class="fa fa-cog"></i></span></a>
   </div>
   <div class="col-12 col-md-10 mx-auto">
 	<table class="table table-striped text-right">

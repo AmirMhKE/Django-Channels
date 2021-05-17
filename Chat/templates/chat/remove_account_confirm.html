@@ -1,0 +1,21 @@
+{% extends 'chat/base.html' %}
+{% load static %}
+{% block title %}Group Leave{% endblock %}
+{% block main %}
+    <link rel="stylesheet" href="{% static 'chat/css/room.css' %}">
+    <div class="container">
+        <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{request.user.username}}</u></b> آیا مطمئنید که می خواهید اکانت خود را حذف کنید؟</h3>
+        <div class="row col-12 col-md-10 mx-0 mx-md-auto d-flex justify-content-center mt-5">
+            <div class="col-12 col-md-6 col-lg-4">
+                <form method="POST">{% csrf_token %}
+                    <input type="hidden" name="user" value="{{request.user.username}}">
+                    <button type="submit" class="rounded btn-color-4">پاک کردن اکانت</button>
+                </form>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <button class="rounded btn-color-3" 
+                onclick="window.location.pathname='/chat/settings/{{request.user.username}}/'">لغو عملیات</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

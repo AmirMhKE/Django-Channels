@@ -7,8 +7,22 @@
 body {
     background-color: var(--color1);
 }
-h2, h3 {
+h1, h2, h3, label, a {
     color: var(--color3);
+}
+.setting {
+    font-size: 2rem;
+}
+a:hover {
+    color: var(--color3);
+}
+.error {
+    color: var(--color4) !important;
+}
+label {
+    font-size: 1rem;
+    width: 100%;
+    margin-top: 20px;
 }
 .myBtn {
     background-color: var(--color2);
@@ -21,6 +35,12 @@ h2, h3 {
 }
 .myBtn:hover {
     background-color: var(--color4);
+}
+.btn-delete {
+    background-color: var(--color4);
+}
+.btn-delete:hover {
+    background-color: #f0474c;
 }
 .myInp {
     padding: 15px 10px !important;
@@ -66,7 +86,7 @@ table tr td a:hover {
     border-color: var(--color2);
 }
 @media screen and (max-width: 767px) {
-    h2 {
+    h2, .setting {
         font-size: 1.5rem;
     }
     h3 {

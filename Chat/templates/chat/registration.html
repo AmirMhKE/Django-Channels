@@ -1,11 +1,13 @@
 {% extends "chat/base.html" %} {% load static %} {% block title %}ثبت نام / ورود{% endblock %} {% block main %}
 <link rel="stylesheet" href="{% static 'chat/css/registration.css' %}" />
 <div class="alert {% if form.errors %}alert-danger{% endif %} text-right errors">
-    {% for fields, errors in form.errors.items %} {% for error in errors %}
-    <ul>
-        <li>{{error}}</li>
-    </ul>
-    {% endfor %} {% endfor %}
+    {% for fields, errors in form.errors.items %} 
+        {% for error in errors %}
+            <ul>
+                <li>{{error}}</li>
+            </ul>
+        {% endfor %} 
+    {% endfor %}
 </div>
 <div class="container">
     <form method="POST">{% csrf_token %}
@@ -15,7 +17,7 @@
                 <div class="signup">
                     <h2 class="title" id="signup"><span>یا</span>ثبت نام</h2>
                     <div class="holder">
-                        <input type="text" class="input" name="username" placeholder="نام کاربری" />
+                        <input type="text" class="input" name="username-signup" placeholder="نام کاربری" />
                         <input type="password" class="input" name="password1" placeholder="رمز عبور" />
                         <input type="password" class="input" name="password2" placeholder="تکرار رمز عبور" />
                     </div>
@@ -26,7 +28,7 @@
                     <div class="center signup">
                         <h2 class="title"><span>یا</span>ورود</h2>
                         <div class="holder">
-                            <input type="text" class="input" name="username" placeholder="نام کاربری" />
+                            <input type="text" class="input" name="username-login" placeholder="نام کاربری" />
                             <input type="password" class="input" name="password" placeholder="رمز عبور" />
                         </div>
                         <button class="submit" type="submit" name="submit" value="login">ورود</button>
