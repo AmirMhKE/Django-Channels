@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'channels',
     'account.apps.AccountConfig',
     'Chat.apps.ChatConfig',
+    'api',
 ]
 
 MIDDLEWARE = [

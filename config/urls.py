@@ -10,4 +10,5 @@ handler500 = "Chat.views.handler500"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('Chat.urls')),
+    path('api/', include('api.urls')),
 ]

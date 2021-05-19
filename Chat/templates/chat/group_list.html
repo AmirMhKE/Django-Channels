@@ -14,9 +14,10 @@
 		</div>
 		<div class="col-12 col-md-10 mx-auto">
 			<div class="row">
-				<div class="col-12 col-md-9">
+				<div class="col-12 col-md-9 search-group">
 					<input type="text" id="room-search-input" 
-					class="rounded myInp" placeholder="گروه خود را وارد کنید...">
+					class="rounded myInp col-12" placeholder="گروه خود را وارد کنید...">
+					<div class="group-lists col-12 rounded"></div>
 				</div>
 				<div class="col-12 col-md-3 mt-4 mt-md-0">
 					<button class="myBtn rounded" id="room-search-btn">جستجو</button>
@@ -59,7 +60,7 @@
 				{% else %}
 					{% if request.user not in chat.members.all %}
 						<div class="col-1"></div>
-						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span> گروه {{chat.room_name}}</a>
+						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span>گروه {{chat.room_name}}</a>
 						<a href="/chat/{{chat.room_name}}/"" class="col-5 text-left">
 						برای عضو شدن کلیک کنید <span><i class="fa fa-plus"></i></span>
 						</a>

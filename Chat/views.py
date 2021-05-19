@@ -1,14 +1,15 @@
 import json
+import re
 import urllib
 
 from account.forms import SignUpForm
 from config import settings
+from django.contrib import messages
 from django.contrib.auth import (authenticate, get_user_model, login,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.paginator import EmptyPage, Paginator
-from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.utils.safestring import mark_safe
 
@@ -180,6 +181,14 @@ def room_confirm(request, room_name, action_name):
 
     return redirect("home")
 
+def username_validator(username):
+    pattern = r"^[a-zA-Z]+([._]?[a-zA-Z0-9]+)*$"
+    result = re.match(pattern, username)
+
+    if result is None or len(username) < 5 or len(username) > 32:
+        return False
+    return True
+
 def check_captcha(request):
     recaptcha_response = request.POST.get('g-recaptcha-response')
     url = 'https://www.google.com/recaptcha/api/siteverify'
@@ -224,6 +233,13 @@ def registration(request):
                     form = {"errors": {"error": [error_msg]}}
                     return render(request, 'chat/registration.html', {"form": form})
                 # End Check CaseInsensitive
+                # Username Validate
+                if not username_validator(username):
+                    error_msg = "شما نمی توانید این نام کاربری را برای خود انتخاب کنید."
+                    error_msg2 = "نام کاربری باید حداقل ۵ حرف و حداکثر ۳۲ حرف باشد و با حروف کوچک یا بزرگ انگلیسی شروع شود و بعد از آن می توانید از اعداد یا نقطه یا زیر خط استفاده کنید و همچنین نام کاربری باید با حروف انگلیسی کوچک یا بزرگ و یا اعداد تمام شود."
+                    form = {"errors": {"error": [error_msg, error_msg2]}}
+                    return render(request, 'chat/registration.html', {"form": form})
+                # End Username Validate
                 form.save()
                 user = authenticate(username=username, password=password)
                 login(request, user)
@@ -265,7 +281,7 @@ def user_update(request, username):
         if request.method == "POST":
             if request.POST.get("submit") == "change_username":
                 form_username = request.POST.get("username")
-                if form_username.replace(" ", ""):
+                if form_username.replace(" ", "") and username_validator(form_username):
                     if not get_case_insensitive_username(form_username) or \
                     form_username.lower() == request.user.username.lower():
                         self_user = user.objects.get(username=username)
@@ -275,6 +291,8 @@ def user_update(request, username):
             
                 if not form_username.replace(" ", ""):
                     context.update({"username_error": "این مقدار لازم است."})
+                elif not username_validator(form_username):
+                    context.update({"username_error": "شما نمی توانید این نام کاربری را برای خود انتخاب کنید."})
                 else:
                     context.update({"username_error": "این نام کاربری وجود دارد."})
             else:

@@ -85,6 +85,38 @@ table tr td a:hover {
     background-color: var(--color1);
     border-color: var(--color2);
 }
+.search-group {
+    position: relative;
+}
+.group-lists {
+    z-index: 1000;
+    border: 2px solid var(--color3);
+    margin-top: 1px;
+    max-height: 250px;
+    padding: 0;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    max-width: 95.5%;
+    display: none;
+}
+.group-item {
+    font-size: 1.2rem;
+    padding: 5px;
+    color: var(--color3);
+    transition-duration: .2s;
+    overflow-x: hidden;
+}
+.group-item:hover {
+    background-color: var(--color4);
+    color: white;
+    cursor: pointer;
+}
+@media screen and (max-width: 1200px) {
+    .group-lists {
+        max-width: 94.5%;
+    }
+}
 @media screen and (max-width: 767px) {
     h2, .setting {
         font-size: 1.5rem;
@@ -92,7 +124,7 @@ table tr td a:hover {
     h3 {
         font-size: 1.3rem;
     }
-    .myBtn, .myInp {
+    .myBtn, .myInp, .group-item {
         font-size: 1rem;
     }
     table tr td a {
@@ -101,5 +133,9 @@ table tr td a:hover {
     .pagination-lg .page-link {
         padding: 0.5rem 1rem;
         font-size: 1rem;
+    }
+    .group-lists {
+        max-width: 93.5%;
+        max-height: 175px;
     }
 }
