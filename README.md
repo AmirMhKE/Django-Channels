@@ -1,4 +1,4 @@
-# Django Channels
+# Django Chat Application
 
 The Django simple chat application
 <hr>
