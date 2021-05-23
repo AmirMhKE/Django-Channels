@@ -30,12 +30,12 @@ body {
         min-height: 45vh;
     }
 }
-@media screen and (max-height: 768px) {
+@media screen and (max-height: 767px) {
     .main {
         min-height: 75vh;
     }
 }
-@media screen and (max-height: 576px) {
+@media screen and (max-height: 575px) {
     .main {
         min-height: 95vh;
     }
@@ -180,4 +180,8 @@ body {
 
 .errors ul li::marker {
     color: var(--color4);
+}
+::placeholder {
+    color: white;
+    opacity: 1;
 }

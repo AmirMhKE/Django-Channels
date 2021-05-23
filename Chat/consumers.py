@@ -1,10 +1,12 @@
 import json
+
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from rest_framework.renderers import JSONRenderer
 from django.contrib.auth import get_user_model
+from rest_framework.renderers import JSONRenderer
+
+from .models import Chat, Message
 from .serializers import MessageSerializer
-from .models import Message, Chat
 
 user = get_user_model()
 
@@ -17,7 +19,7 @@ class ChatConsumer(WebsocketConsumer):
         chat_model = Chat.objects.get(room_name=room_name)
         message_model = Message.objects.create(message_type="txt", author=user_model, content=message, related_chat=chat_model)
         result = eval(self.message_serializer(message_model))
-        data.update({"room_name": room_name, "message_type": "txt"})
+        data.update({"room_name": room_name, "message_type": "txt", "timestamp": message_model.timestamp})
         self.notif(data)
         self.send_to_chat_message(result)
 
@@ -55,7 +57,7 @@ class ChatConsumer(WebsocketConsumer):
         chat_model = Chat.objects.get(room_name=room_name)
         message_model = Message.objects.create(message_type="img", author=user_model, 
         content=data["content"], related_chat=chat_model)
-        data.update({"message_type": "img"})
+        data.update({"message_type": "img", "timestamp": message_model.timestamp})
         self.notif(data)
         self.send_to_chat_message(data)
 
@@ -102,7 +104,8 @@ class ChatConsumer(WebsocketConsumer):
                 "type": "chat_message",
                 "content": message["content"],
                 "command": (lambda command: "img" if command == "img" else "new_message")(command),
-                "__str__": message["__str__"]
+                "__str__": message["__str__"],
+                "timestamp": eval(self.message_serializer(message))["timestamp"]
             }
         )
 

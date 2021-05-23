@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{% static 'chat/css/room.css' %}">
     <div class="container">
         {% if action_name == 'create' %}
-            <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می خواهید <b><u>{{room_name}}</u></b> را ایجاد کنید و عضو آن شوید؟</h3>
+            <h3 class="col-12 col-md-10 mx-auto text-center text-justify mt-3"><b><u>{{username}}</u></b> آیا می  خواهید گروه <b><u>{{room_name}}</u></b> را ایجاد کنید و عضو آن شوید؟</h3>
             <div class="row col-12 col-md-10 mx-0 mx-md-auto d-flex justify-content-center mt-5">
                 <div class="col-12 col-md-6 col-lg-4">
                     <form method="POST" action="{{url}}">{% csrf_token %}

@@ -31,7 +31,7 @@ class Message(models.Model):
         return Message.objects.order_by("-timestamp").filter(related_chat__room_name=room_name)
 
     def __str__(self):
-        return f"{self.author.username}"
+        return f"{self.author.username} {self.timestamp}"
 
     class Meta:
         verbose_name = "پیام"

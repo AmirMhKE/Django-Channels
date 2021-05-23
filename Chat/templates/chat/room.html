@@ -1,49 +1,51 @@
+{% extends 'chat/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Chat Room</title>
-    <link rel="stylesheet prefetch"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css"/>
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-    rel="stylesheet" id="bootstrap-css"/>
-    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}" />
-  </head>
-  <body>
-    <div id="frame">
-      <div class="content">
-        <div class="contact-profile">
-          <img src="" alt="" />
-          <p dir="rtl"><span class="icon_"><i class="fa fa-user"></i></span>نام کاربری شما: {{username}}</p>
-          <div class="main-title" dir="rtl">
-            <span class="icon_"><i class="fa fa-comment"></i></span>
-            <p>نام گروه: "{{room_name}}"</p>
-          </div>
+{% block title %}Chat Room{% endblock %}
+{% block main %}
+  <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+  <header class="align-items-center sticky-top">
+    <div class="container">
+        <div class="row d-flex align-items-center">
+          <h5 class="text-center col-6 col-md-3 header-title">
+            <a href="{% url 'home' %}"><span><i class="fa fa-home"></i></span> صفحه اصلی</a></h5>
+            <h5 class="text-center col-6 col-md-3 header-title">
+            <span><i class="fa fa-user"></i></span> نام کاربری : {{username}}</h5>
+            <h5 class="text-center col-6 col-md-3 header-title">
+            <span><i class="fa fa-comment"></i></span> نام گروه: {{room_name}}</h5>
+            <h5 class="text-center col-6 col-md-3 header-title">
+            <span><i class="fa fa-users"></i></span> تعداد اعضا: {{members_count}}</h5>
         </div>
-        <div class="messages">
-          <ul id="chat-log">
-          </ul>
-        </div>
-        <div class="message-input">
-          <div class="wrap">
-            <textarea dir="rtl" id="chat-message-input" placeholder="پیام خود را تایپ  کنید..."></textarea>
-            <span id="input-file"><i class="fa fa-paperclip attachment"></i></span>
-            <button id="chat-message-submit" class="submit">
-              <i class="fa fa-paper-plane" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
-    <input id="inp" type='file' accept="image/*" style="display:none" >
-    <p id="b64"></p>
-    {{ room_name|json_script:"room-name" }}
-    <script src="{% static 'chat/js/reconnecting-websocket.js' %}"></script>
-    <script src="{% static 'chat/js/room.js' %}"></script>
-    <script>
-      var username_ = {{username}};
-      setUserName(username_);
-    </script>
-  </body>
-</html>
+  </header>
+  <main class="messages">
+    <ul id="chat-log">
+        
+    </ul>
+  </main>
+  <footer class="fixed-bottom">
+    <div class="row justify-content-center">
+        <div class="row justify-content-between">
+            <div class="scroll-down">
+                <button id="scroll-to-down" title="رفتن به پایین صفحه"><span><i class="fa fa-angle-double-down"></i></span></button>
+            </div>
+            <div class="message-box">
+                <textarea id="chat-message-input" placeholder="پیام خود را وارد کنید..."></textarea>
+            </div>
+            <div class="send-file">
+                <button id="input-file" title="ارسال عکس"><span><i class="fa fa-paperclip"></i></span></button>
+            </div>
+            <div class="send-msg">
+                <button id="chat-message-submit" title="ارسال پیام"><span><i class="fa fa-paper-plane"></i></span></button>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <!-- hiddens -->
+  <input id="inp" type='file' accept="image/*" style="display:none" >
+  <input type="hidden" id="username" value="{{username}}">
+  {{ room_name|json_script:"room-name" }}
+  <!-- **** -->
+  <script src="{% static 'chat/js/reconnecting-websocket.js' %}"></script>
+  <script src="{% static 'chat/js/room.js' %}"></script>
+  <script src="{% static 'chat/js/jalali_converter.js' %}"></script>
+{% endblock %}

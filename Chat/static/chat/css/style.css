@@ -1,231 +1,218 @@
+@import url(colors.css);
+* {
+    transition: all .5s ease-in-out;
+    font-family: Shabnam, Arial, sans-serif;
+    direction: rtl;
+}
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #27ae60;
-    font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    font-size: 1em;
-    letter-spacing: 0.1px;
-    color: #32465a;
-    text-rendering: optimizeLegibility;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  #frame {
+    background-color: var(--color1);
+}
+p {
+    word-break: break-all;
+}
+a {
+	color: white;
+}
+a:hover {
+	color: white;
+}
+header {
+    background-color: var(--color3);
+    color: white;
+    padding: 15px 10px;
+    height: 75px;
     width: 100%;
-    min-width: 360px;
-    height: 100vh;
-    min-height: 300px;
-    background: #E6EAEA;
-  }
-  @media screen and (max-width: 360px) {
-    #frame {
-      width: 100%;
-      height: 100vh;
-    }
-  }
-  #frame .content {
-    float: right;
+    display: flex;
+}
+.header-title {
+    padding: 0;
+    margin: 0;
+    line-height: 30px;
+}
+main {
+    overflow-y: auto;
+    width: 100%;
+    height: calc(100% - 135px);
+    padding: 15px 10px;
+    color: white;
+}
+main ul {
+    list-style: none;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+}
+main ul li {
+    margin-top: 15px;
+}
+main ul li:last-child {
+    margin-bottom: 100px;
+}
+.sent {
+    text-align: right;
+    max-width: 50%;
+    display: flex;
+}
+.msg-text {
+    font-size: 1.2rem;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 30px;
+}
+.msg-text * {
+    margin: 0;
+    padding: 0;
+}
+.no-message {
+    background-color: var(--color3);
+    color: white;
+    padding: 10px 5px;
+    margin: 0 auto;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 100px;
+    width: 33.33%;
+}
+.sent .msg-text {
+    background-color: var(--color2);
+}
+.replies .msg-text {
+    background-color: var(--color4);
+}
+.msg-img {
+    margin-top: 50px;
+    border-radius: 10px;
+    width: 80%;
+    height: 400px;
+}
+small {
+    font-size: .8rem;
+}
+.replies {
+    text-align: right;
+    max-width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 50%;
+}
+.replies h5 {
+    text-align: left;
+}
+footer {
+    height: 75px;
+    background-color: var(--color3);
+    width: 100%;
+}
+footer > div > div {
+    width: 95%;
+}
+.scroll-down, .send-file, .send-msg {
+    width: 5%;
+    height: 50px;
+    margin: 12.5px 0;
+}
+.message-box {
+    width: 80%;
+}
+.message-box textarea {
+    width: 100%;
+    height: 50px;
+    font-size: 1.2rem;
+    resize: none;
+    border: none;
+    outline: none;
+    overflow-y: hidden;
+    background-color: var(--color4);
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border-radius: 20px;
+    margin: 12.5px 10px;
+}
+.message-box textarea::placeholder {
+    padding: 0;
+    color: white;
+    opacity: 1;
+}
+.message-box textarea:focus, .message-box textarea:hover {
+    background-color: var(--color4);
+    color: white;
+}
+.scroll-down button, .send-file button, .send-msg button {
+    background-color: var(--color2);
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    position: relative;
-  }
-  @media screen and (max-width: 735px) {
-    #frame .content {
-      /* width: calc(100% - 100px); */
-      /* min-width: 300px !important; */
-    }
-  }
-  @media screen and (min-width: 900px) {
-    #frame .content {
-      /* width: calc(100% - 150px); */
-    }
-  }
-  #frame .content .contact-profile {
-    width: 100%;
-    height: 80px;
-    line-height: 80px;
-    background: #f5f5f5;
-  }
-  #frame .content .contact-profile img {
-    width: 60px;
-    border-radius: 50%;
-    float: left;
-    margin: 9px 12px 0 9px;
-  }
-  #frame .content .contact-profile p {
-    float: left;
-    font-size: 18px;
-  }
-  #frame .content .contact-profile .main-title {
-    float: right;
-  }
-  #frame .content .contact-profile .main-title p {
-    margin: 0;
-  }
-  #frame .content .messages {
-    height: auto;
-    min-height: calc(100% - 130px);
-    max-height: calc(100% - 130px);
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 100%;
-  }
-  @media screen and (max-width: 735px) {
-    #frame .content .messages {
-      max-height: calc(100% - 130px);
-    }
-  }
-  #frame .content .messages::-webkit-scrollbar {
-    width: 8px;
-    background: transparent;
-  }
-  #frame .content .messages::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.966);
-  }
-  #frame .content .messages ul li {
-    text-align: right;
-    display: inline-block;
-    clear: both;
-    margin: 15px 15px 0 0;
-    width: calc(100% - 25px);
-    font-size: 0.9em;
-  }
-  #frame .content .messages ul li:nth-last-child(1) {
-    margin-bottom: 20px;
-  }
-  #frame .content .messages ul li.sent img {
-    margin: 6px 0 0 8px;
-  }
-  #frame .content .messages ul li.sent > div {
-    display: inline-block;
-    background: #435f7a;
-    color: #f5f5f5;
-  }
-  #frame .content .messages ul li.replies img {
-    margin: 6px 8px 0 0;
-    float: left;
-  }
-  #frame .content .messages ul li.replies > div {
-    display: inline-block;
-    background: #f5f5f5;
-  }
-  #frame .content .messages ul li.replies {
-    text-align: left;
-  }
-  #frame .content .messages ul li img {
-    width: 25%;
-    border-radius: 5%;
-    float: right;
-  }
-  @media screen and (max-width: 1000px) {
-    #frame .content .messages ul li img {
-      width: 40%;
-    }
-  }
-  #frame .content .messages ul li > div {
-    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    color: white;
     border-radius: 20px;
-    max-width: 35%;
-    line-height: 100%;
-    font-size: 18px;
-  }
-  #frame .content .messages ul li > div p {
-    margin: 0;
-    margin-top: 10px !important;
-    line-height: 0px !important;
-  }
-  @media screen and (min-width: 735px) {
-    #frame .content .messages ul li > div {
-      max-width: 35%;
+}
+.send-msg button:hover, .send-file button:hover, .scroll-down button:hover {
+    background-color: var(--color2);
+}
+@media screen and (max-width: 1199px) {
+    .scroll-down, .send-file, .send-msg {
+        width: 10%;
     }
-  }
-  #frame .content .message-input {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    z-index: 99;
-  }
-  #frame .content .message-input .wrap {
-    position: relative;
-  }
-  #frame .content .message-input .wrap textarea {
-    font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
-    float: left;
-    border: none;
-    width: calc(100% - 90px);
-    padding: 11px 32px 10px 8px;
-    font-size: 1.8em;
-    color: #32465a;
-    height: 50px;
-    border: none !important;
-    outline: none !important;
-    resize: none;
-    overflow: hidden;
-  }
-  @media screen and (max-width: 735px) {
-    #frame .content .message-input .wrap input {
-      padding: 15px 32px 16px 8px;
+    .message-box {
+        width: 65%;
     }
-  }
-  #frame .content .message-input .wrap input:focus {
-    outline: none;
-  }
-  #frame .content .message-input .wrap .attachment {
-    position: absolute;
-    right: 60px;
-    z-index: 4;
-    margin-top: 10px;
-    font-size: 1.8em;
-    color: #435f7a;
-    opacity: .5;
-    cursor: pointer;
-  }
-  @media screen and (max-width: 735px) {
-    #frame .content .message-input .wrap .attachment {
-      margin-top: 19px;
-      right: 65px;
+    .scroll-down button, .send-file button, .send-msg button {
+        font-size: 1.5rem;
     }
-  }
-  #frame .content .message-input .wrap .attachment:hover {
-    opacity: 1;
-  }
-  #frame .content .message-input .wrap button {
-    float: right;
-    border: none;
-    width: 50px;
-    padding: 20px 0;
-    cursor: pointer;
-    background: #32465a;
-    color: #f5f5f5;
-  }
-  @media screen and (max-width: 735px) {
-    #frame .content .message-input .wrap button {
-      padding: 20px 0;
+}
+@media screen and (max-width: 767px) {
+    .header-title, .msg-text, .message-box textarea {
+        font-size: 1rem;
     }
-  }
-  #frame .content .message-input .wrap button:hover {
-    background: #435f7a;
-  }
-  #frame .content .message-input .wrap button:focus {
-    outline: none;
-  }
-  
-  .fa {
-    font-size: 1.5em !important;
-  }
-  .icon_ {
-    font-size: 15px;
-    margin: 0 10px;
-  }
-
-  .icon_:hover {
-    color: #435f7a;
-    cursor: pointer;
-  }
-  #input-file {
-    font-size: 15px;
-  }
+    footer {
+        height: 60px;
+    }
+    .scroll-down, .send-file, .send-msg, .message-box textarea {
+        height: 45px;
+        margin-top: 7.5px;
+    }
+    .sent {
+        max-width: 80%;
+    }
+    .replies {
+        max-width: 80%;
+        margin-right: 20%;
+    }
+    .no-message {
+        width: 83.33%;
+    }
+    .msg-img {
+        width: 100%;
+        height: 200px;
+    }
+    main {
+        height: calc(100% - 125px);
+    }
+    .scroll-down button, .send-file button, .send-msg button {
+        font-size: 1.2rem;
+    }
+    .scroll-down, .send-file, .send-msg {
+        width: 12%;
+    }
+    .message-box {
+        width: 50%;
+    }
+    footer > div > div {
+        width: 90%;
+    }
+    .no-message h5 {
+        font-size: 1.2rem;
+    }
+}
+@media screen and (max-width: 575px) {
+    .header-title, .msg-text, .message-box textarea::placeholder {
+        font-size: .9rem;
+    }
+    .no-message h5 {
+        font-size: 1rem;
+    }
+}

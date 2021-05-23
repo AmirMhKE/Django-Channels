@@ -4,16 +4,15 @@ import urllib
 
 from account.forms import SignUpForm
 from config import settings
-from django.contrib import messages
 from django.contrib.auth import (authenticate, get_user_model, login,
                                  update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.core.paginator import EmptyPage, Paginator
 from django.shortcuts import redirect, render
-from django.utils.safestring import mark_safe
 
 from .models import Chat
+from .persian_number_converter import convert
 
 
 def handler400(request, exception=None):
@@ -118,10 +117,12 @@ def room(request, room_name):
                 pass
 
     username = request.user.username
+    members_count = chat_model[0].members.count()
 
     context = {
         "room_name": room_name,
-        "username": mark_safe(json.dumps(username))
+        "members_count": convert(members_count),
+        "username": username,
     }
 
     return render(request, "chat/room.html", context)

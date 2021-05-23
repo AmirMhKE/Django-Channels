@@ -4,11 +4,13 @@ document.querySelector("#room-search-input").onkeyup = function (e) {
     }
 };
 
-document.querySelector("#room-create-input").onkeyup = function (e) {
-    if (e.keyCode === 13) { // enter, return
-        document.querySelector("#room-create-btn").click();
-    }
-};
+try {
+    document.querySelector("#room-create-input").onkeyup = function (e) {
+        if (e.keyCode === 13) { // enter, return
+            document.querySelector("#room-create-btn").click();
+        }
+    };
+} catch {}
 
 document.querySelector("#room-search-btn").onclick = function (e) {
     var searchName = document.querySelector("#room-search-input").value;
@@ -20,15 +22,17 @@ document.querySelector("#room-search-btn").onclick = function (e) {
     }
 };
 
-document.querySelector("#room-create-btn").onclick = function (e) {
-    var groupName = document.querySelector("#room-create-input").value;
-    
-    if(groupName.replaceAll(" ", "")) {
-        window.location.pathname = "/chat/" + groupName.trim() + "/create/confirm/";
-    } else {
-        document.querySelector("#room-create-input").value = "";
-    }
-};
+try {
+    document.querySelector("#room-create-btn").onclick = function (e) {
+        var groupName = document.querySelector("#room-create-input").value;
+        
+        if(groupName.replaceAll(" ", "")) {
+            window.location.pathname = "/chat/" + groupName.trim() + "/create/confirm/";
+        } else {
+            document.querySelector("#room-create-input").value = "";
+        }
+    };
+} catch {}
 
 // Group list suggestion box
 
@@ -61,6 +65,21 @@ function send_request(value) {
     }
 }
 
+function persian_number_converter(ls) {
+    shapes = {"0": "۰", "1": "۱", "2": "۲", "3": "۳", "4": "۴", "5": "۵",
+    "6": "۶", "7": "۷", "8": "۸", "9": "۹"};
+    result = "";
+
+    for(w of ls) {
+        if(shapes[w] === undefined)
+            result += w
+        else
+            result += shapes[w]
+    }
+
+    return result;
+}
+
 function set_suggestions_search_box(data) {
     suggestion_lists.innerHTML = "";
     suggestion_lists.style.display = "block";
@@ -71,7 +90,7 @@ function set_suggestions_search_box(data) {
             <div class='group-item' data-group-name='${data[i]["group_name"]}'>
                 <div class='row'>
                     <p class='col-6 text-right'>${data[i]["group_name"]}</p>
-                    <p class='col-6 text-left'>${data[i]["members_count"]} 
+                    <p class='col-6 text-left'>${persian_number_converter(String(data[i]["members_count"]))} 
                     <span><i class='fa fa-user'></i></span></p>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 @import url(colors.css);
 * {
-    transition: all .5s ease-in-out;
     font-family: Shabnam, Arial, sans-serif;
     direction: rtl;
 }
@@ -32,12 +31,14 @@ label {
     font-size: 1.2em;
     outline: none;
     border: 2px solid var(--color3);
+    transition: all .5s ease-in-out;
 }
 .myBtn:hover {
     background-color: var(--color4);
 }
 .btn-delete {
     background-color: var(--color4);
+    transition: all .5s ease-in-out;
 }
 .btn-delete:hover {
     background-color: #f0474c;
@@ -48,6 +49,7 @@ label {
     outline: none;
     border: 2px solid var(--color3);
     font-size: 1.2em;
+    transition: all .5s ease-in-out;
 }
 .myInp:hover {
     background-color: var(--color4);
@@ -55,6 +57,10 @@ label {
 }
 .myInp:focus {
     background-color: var(--color4);
+    color: white;
+}
+.myInp:focus::placeholder, .myInp:hover::placeholder {
+    opacity: 1;
     color: white;
 }
 table tr td a {
@@ -76,6 +82,7 @@ table tr td a:hover {
 .page-link {
     background-color: var(--color1);
     color: var(--color3);
+    transition: all .5s ease-in-out;
 }
 .page-item.active .page-link {
     background-color: var(--color2);
@@ -104,15 +111,15 @@ table tr td a:hover {
     font-size: 1.2rem;
     padding: 5px;
     color: var(--color3);
-    transition-duration: .2s;
+    transition: all .2s ease;
     overflow-x: hidden;
+    cursor: pointer;
 }
 .group-item:hover {
     background-color: var(--color4);
     color: white;
-    cursor: pointer;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1199px) {
     .group-lists {
         max-width: 94.5%;
     }
@@ -137,5 +144,19 @@ table tr td a:hover {
     .group-lists {
         max-width: 93.5%;
         max-height: 175px;
+    }
+}
+@media screen and (max-width: 575px) {
+    h2, .setting {
+        font-size: 1.4rem;
+    }
+    h3 {
+        font-size: 1.2rem;
+    }
+    table tr td a {
+        font-size: 1rem;
+    }
+    .myBtn, .myInp, .group-item {
+        font-size: .9rem;
     }
 }

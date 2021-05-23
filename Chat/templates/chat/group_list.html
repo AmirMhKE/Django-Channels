@@ -60,7 +60,7 @@
 				{% else %}
 					{% if request.user not in chat.members.all %}
 						<div class="col-1"></div>
-						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span>گروه {{chat.room_name}}</a>
+						<a class="col-5 text-right" href="/chat/{{chat.room_name}}/"><span><i class="far 	fa-comment"></i></span> گروه {{chat.room_name}}</a>
 						<a href="/chat/{{chat.room_name}}/"" class="col-5 text-left">
 						برای عضو شدن کلیک کنید <span><i class="fa fa-plus"></i></span>
 						</a>

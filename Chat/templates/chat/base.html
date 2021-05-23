@@ -1,15 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fa-ir">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#43dde6">
     <title>{% block title %}{% endblock %}</title>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css' integrity='sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==' crossorigin='anonymous'/>
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css' integrity='sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw==' crossorigin='anonymous'/>
 	<link href="https://v1.fontapi.ir/css/Shabnam" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'chat/css/base.css' %}">
 </head>
 <body>
     {% block main %}{% endblock %}
 </body>
+<script src="{% static 'chat/js/base.js' %}"></script>
 </html>
